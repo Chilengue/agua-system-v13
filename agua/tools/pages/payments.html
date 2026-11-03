@@ -1,0 +1,28 @@
+title: Pagamentos
+scripts: /js/pages/payments.js
+---
+<div class="stats-grid" id="stats"></div>
+<div class="panel">
+  <div class="panel-header">
+    <div><h2>Pagamentos</h2><span class="muted">Recibos emitidos. Valide pagamentos por M-Pesa/banco e anule (apague) pagamentos errados — o valor volta à dívida.</span></div>
+    <div class="page-actions"><button class="btn-secondary" id="btnPrint">Imprimir</button><button class="btn-secondary" id="btnCsv">Excel (CSV)</button><a class="btn-primary" href="/cashier">+ Receber pagamento</a></div>
+  </div>
+  <div class="toolbar">
+    <input type="search" id="q" placeholder="Recibo, cliente, código, telefone ou referência…">
+    <select id="method"><option value="">Todos os métodos</option></select>
+    <input type="date" id="from"><input type="date" id="to">
+    <button class="btn-secondary" id="btnClear">Limpar</button>
+  </div>
+  <div class="chips" id="chips">
+    <button class="chip active" data-f="">Todos</button>
+    <button class="chip" data-f="confirmed">Confirmados</button>
+    <button class="chip orange" data-f="pending">Por validar</button>
+    <button class="chip red" data-f="voided">Anulados</button>
+  </div>
+  <div id="custFilter"></div>
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th>Recibo</th><th>Cliente</th><th class="hide-sm">Data</th><th class="hide-sm">Faturas</th><th>Método</th><th class="num">Valor</th><th>Estado</th><th></th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table></div>
+  <div class="pager" id="pager"></div>
+</div>

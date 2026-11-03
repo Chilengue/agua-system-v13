@@ -1,0 +1,39 @@
+title: Painel
+scripts: /js/pages/dashboard.js
+---
+<div class="panel-header" style="margin-bottom:16px">
+  <div><h2 style="font-size:18px" id="hello">Painel</h2><span class="muted" id="periodLabel"></span></div>
+  <div class="page-actions">
+    <select id="period" style="width:auto"></select>
+    <button class="btn-secondary" id="btnPrint">Imprimir resumo</button>
+  </div>
+</div>
+<div id="setupAlert"></div>
+<div class="stats-grid cols-3" id="kpis"><div class="spinner"></div></div>
+<div class="two-cols">
+  <div class="panel">
+    <div class="panel-header"><h2>Faturado vs. recebido (12 meses)</h2></div>
+    <div class="bars" id="chart"></div>
+    <div class="legend"><span><i style="background:#cbd5e1"></i>Faturado</span><span><i style="background:var(--primary)"></i>Recebido</span></div>
+  </div>
+  <div class="panel">
+    <div class="panel-header"><h2>Recebido por método</h2><a class="btn-secondary" href="/payments">Pagamentos</a></div>
+    <div class="hbars" id="methods"></div>
+    <div style="margin-top:22px">
+      <div class="panel-header" style="margin-bottom:8px"><h2>Leituras do mês</h2><a class="btn-secondary" href="/readings">Ver leituras</a></div>
+      <div id="readingsBox"></div>
+    </div>
+  </div>
+</div>
+<div class="two-cols">
+  <div class="panel">
+    <div class="panel-header"><h2>Clientes que pagaram no mês</h2><a class="btn-secondary" href="/reports#payers">Relatório</a></div>
+    <div class="table-wrap"><table class="table"><thead><tr><th>Cliente</th><th class="num">Pagamentos</th><th class="num">Valor</th><th class="num hide-sm">Ainda deve</th></tr></thead>
+      <tbody id="payers"></tbody></table></div>
+  </div>
+  <div class="panel">
+    <div class="panel-header"><h2>Maiores devedores</h2><a class="btn-secondary" href="/debtors">Todos os devedores →</a></div>
+    <div class="table-wrap"><table class="table"><thead><tr><th>Cliente</th><th class="num hide-sm">Faturas</th><th class="num">Em dívida</th><th class="num hide-sm">Dias</th></tr></thead>
+      <tbody id="debtors"></tbody></table></div>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1a17">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/app.css">
+  <title>Extratos · AguaSystem</title>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar"></aside>
+    <main class="main-content">
+      <header class="topbar"></header>
+      <section id="content">
+        <div class="panel">
+          <div class="panel-header"><div><h2>Extrato de conta do cliente</h2>
+            <span class="muted">O extrato mostra faturas (débito), pagamentos (crédito), leitura anterior e atual e o saldo de cada movimento. É diferente dos relatórios, que resumem a empresa.</span></div></div>
+          <div class="form-grid cols-3">
+            <div class="field span-2"><label>Cliente</label><input type="search" id="q" placeholder="Nome, código, telefone ou nº de conta…" autocomplete="off">
+              <div id="results" class="cust-list" style="margin-top:8px;max-height:260px;overflow:auto"></div></div>
+            <div class="field"><label>Cliente escolhido</label><div id="chosen" class="muted" style="padding:11px 0">—</div></div>
+          </div>
+          <div id="opts" style="display:none">
+            <div class="form-grid cols-3" style="margin-top:6px">
+              <div class="field"><label>Contas</label>
+                <select id="mode"><option value="all">Todas as contas juntas (um extrato)</option><option value="each">Todas, uma por página (imprimir uma a uma)</option><option value="single">Só uma conta</option></select></div>
+              <div class="field" id="accField" style="display:none"><label>Conta</label><select id="account"></select></div>
+              <div class="field"><label>De</label><input type="date" id="from"></div>
+              <div class="field"><label>Até</label><input type="date" id="to"></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn-secondary" id="btnView">Pré-visualizar</button>
+              <button class="btn-primary" id="btnPrint">Imprimir extrato</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel" id="previewPanel" style="display:none;overflow:auto"><div id="preview"></div></div>
+      </section>
+    </main>
+  </div>
+  <script src="/js/app.js"></script>
+  <script src="/js/print-docs.js"></script>
+  <script src="/js/pages/statements.js"></script>
+</body>
+</html>

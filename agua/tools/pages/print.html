@@ -1,0 +1,8 @@
+title: Imprimir
+layout: plain
+scripts: /vendor/jspdf.umd.min.js, /js/print-docs.js, /js/pages/print.js
+---
+<style id="pageSize"></style>
+<style>body{background:#e5e9ec}#bar{display:flex;gap:8px;justify-content:center;padding:12px}#doc{padding:10px}@media print{body{background:#fff}#bar{display:none}#doc{padding:0}}</style>
+<div id="bar"><button class="btn-primary" onclick="window.print()">Imprimir</button><button class="btn-secondary" id="btnPdf" style="display:none">Baixar PDF</button><button class="btn-secondary" onclick="history.length > 1 ? history.back() : window.close()">Fechar</button></div>
+<div id="doc"><div class="spinner"></div></div>

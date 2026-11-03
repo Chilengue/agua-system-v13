@@ -1,0 +1,69 @@
+title: Mensagens
+scripts: /js/pages/messages.js
+---
+<div class="stats-grid" id="stats"></div>
+<div class="alert info" id="modeInfo" style="display:none"></div>
+<div class="panel">
+  <div class="panel-header">
+    <div><h2>Mensagens aos clientes</h2><span class="muted">Avisos de faturas, recibos de pagamento e lembretes de dívida enviados por WhatsApp<span id="smsHint"></span>.</span></div>
+    <div class="page-actions">
+      <a class="btn-secondary" href="/settings#messages">Configurar números</a>
+      <button class="btn-secondary" id="btnPrint">Imprimir</button>
+      <button class="btn-primary" id="btnNew">+ Enviar mensagens</button>
+    </div>
+  </div>
+  <div class="toolbar">
+    <input type="search" id="q" placeholder="Cliente, código, telefone ou texto…">
+    <select id="channel" class="sm"><option value="">Todos os canais</option><option value="whatsapp">WhatsApp</option><option value="sms">SMS</option></select>
+    <select id="kind" class="sm"><option value="">Todos os tipos</option><option value="invoice">Faturas</option><option value="payment">Recibos</option><option value="reminder">Lembretes</option><option value="custom">Livres</option></select>
+    <input type="date" id="from"><input type="date" id="to">
+    <button class="btn-secondary" id="btnClear">Limpar</button>
+  </div>
+  <div class="chips" id="chips">
+    <button class="chip active" data-f="">Todas</button>
+    <button class="chip orange" data-f="manual">Por abrir</button>
+    <button class="chip" data-f="sent">Enviadas</button>
+    <button class="chip blue" data-f="queued">Na fila</button>
+    <button class="chip red" data-f="failed">Com falha</button>
+  </div>
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th>Cliente</th><th>Canal</th><th class="hide-sm">Mensagem</th><th class="hide-sm">Data</th><th>Estado</th><th></th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table></div>
+  <div class="pager" id="pager"></div>
+</div>
+
+<div class="modal" id="sendModal" data-static>
+  <div class="modal-content wide">
+    <div class="modal-head"><h2>Enviar mensagens</h2><button class="x-close" data-close="sendModal">×</button></div>
+    <form id="sendForm">
+      <div class="form-grid cols-3">
+        <div class="field"><label class="req">Canal</label><select name="channel" id="sChannel"></select></div>
+        <div class="field"><label class="req">Para</label><select name="target" id="sTarget">
+          <option value="debtors">Todos os clientes com dívida</option>
+          <option value="overdue">Só clientes com faturas vencidas</option>
+          <option value="all">Todos os clientes ativos</option>
+          <option value="pick">Escolher clientes…</option></select></div>
+        <div class="field" id="minField"><label>Dívida mínima</label><input type="number" name="min_debt" min="0" step="0.01" placeholder="0"></div>
+      </div>
+      <div id="pickBox" style="display:none;margin-top:12px">
+        <div class="field"><label>Procurar cliente</label><input type="search" id="pickQ" placeholder="Nome, código ou telefone…"></div>
+        <div id="pickResults" class="cust-list" style="margin:8px 0;max-height:180px;overflow:auto"></div>
+        <div id="picked" class="chips"></div>
+      </div>
+      <div class="field" style="margin-top:12px"><label>Mensagem</label>
+        <textarea name="text" id="sText" rows="4" maxlength="1000" placeholder="Vazio = lembrete de dívida (modelo da empresa)."></textarea>
+        <div class="tpl-vars" id="sVars"></div>
+        <small>Os campos entre chavetas são trocados pelos dados de cada cliente.</small></div>
+      <div class="form-actions"><button type="button" class="btn-secondary" data-close="sendModal">Cancelar</button><button class="btn-primary" type="submit" id="btnSend">Enviar</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="modal" id="openModal">
+  <div class="modal-content wide">
+    <div class="modal-head"><h2>Mensagens por abrir</h2><button class="x-close" data-close="openModal">×</button></div>
+    <p class="muted" style="margin-bottom:10px">Sem API configurada, cada mensagem abre no WhatsApp/SMS do seu telemóvel ou computador com o texto pronto. Toque em <b>Abrir</b>, envie e passe à seguinte.</p>
+    <div class="table-wrap"><table class="table"><thead><tr><th>Cliente</th><th>Telefone</th><th class="hide-sm">Mensagem</th><th></th></tr></thead><tbody id="openRows"></tbody></table></div>
+  </div>
+</div>

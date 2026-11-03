@@ -1,0 +1,19 @@
+# Opcional: só se quiser o PostgreSQL e a aplicação em Docker.
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: agua_system
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes: [ "pgdata:/var/lib/postgresql/data" ]
+    ports: [ "5432:5432" ]
+  app:
+    build: .
+    depends_on: [ db ]
+    environment:
+      DB_HOST: db
+      DB_PASSWORD: postgres
+    ports: [ "8080:8080" ]
+volumes:
+  pgdata:

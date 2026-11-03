@@ -1,0 +1,163 @@
+title: Entrar
+layout: plain
+css: /vendor/fa/css/all.min.css, /css/login.css
+scripts: /vendor/jspdf.umd.min.js, /js/pages/login.js
+---
+<script>document.body.className = 'login-body';</script>
+<div class="bg-animated" aria-hidden="true"></div>
+<div class="waves" aria-hidden="true">
+  <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
+    <path class="wave" d="M0,150 C300,80 600,220 900,130 C1100,80 1200,140 1200,140 L1200,300 L0,300 Z" fill="rgba(87,197,182,0.06)"/>
+    <path class="wave" d="M0,200 C200,120 500,250 800,160 C1000,110 1200,180 1200,180 L1200,300 L0,300 Z" fill="rgba(87,197,182,0.035)"/>
+    <path class="wave" d="M0,240 C300,180 600,280 900,210 C1100,170 1200,220 1200,220 L1200,300 L0,300 Z" fill="rgba(87,197,182,0.015)"/>
+  </svg>
+</div>
+<div id="particles" class="particles" aria-hidden="true"></div>
+<div id="banner" class="banner" role="status"><i class="fas fa-exclamation-triangle"></i><span id="bannerText"></span></div>
+
+<main class="login-wrapper">
+  <section class="login-card glass" aria-labelledby="brandName">
+    <header class="login-head">
+      <div class="logo-wrap"><i class="fas fa-tint" aria-hidden="true"></i></div>
+      <h1 id="brandName">ÁguaSistema</h1>
+      <p class="slogan">Sistema de Gestão de Água</p>
+      <p class="hint">Entre com o código da empresa, o seu utilizador ou o email registado.</p>
+    </header>
+
+    <div id="loginMsg" class="msg hidden" role="alert"></div>
+
+    <form id="loginForm" autocomplete="on" novalidate>
+      <div class="f">
+        <label for="username">Utilizador ou email</label>
+        <div class="ig"><i class="fas fa-user"></i>
+          <input class="in" type="text" id="username" placeholder="Ex.: AGUA-VJA3-VGRA ou email" required autofocus autocomplete="username"></div>
+      </div>
+      <div class="f">
+        <label for="password">Senha</label>
+        <div class="ig"><i class="fas fa-lock"></i>
+          <input class="in pr" type="password" id="password" placeholder="A sua senha" required autocomplete="current-password">
+          <button type="button" class="eye" data-eye="password" aria-label="Mostrar senha"><i class="fas fa-eye"></i></button></div>
+      </div>
+      <div class="row-between">
+        <label class="check"><input type="checkbox" id="remember" checked> Lembrar-me</label>
+        <div class="links">
+          <button type="button" class="link" id="openForgot">Esqueceu a senha?</button>
+          <span class="sep">|</span>
+          <button type="button" class="link brand" id="openRegister">Registar empresa</button>
+        </div>
+      </div>
+      <button type="submit" id="loginBtn" class="btn-p"><i class="fas fa-sign-in-alt"></i><span>Entrar</span></button>
+    </form>
+
+    <footer class="login-foot"><span id="version">AguaSystem</span> &copy; <span id="year"></span></footer>
+  </section>
+
+  <aside class="support glass">
+    <div class="ic"><i class="fas fa-headset"></i></div>
+    <div><small>Suporte e ativação de contas</small>
+      <a id="supportPhone" href="tel:861544303">861 544 303</a> <span id="supportName">— Gestora Paula Zacarias</span></div>
+  </aside>
+</main>
+
+<!-- ============ RECUPERAR SENHA ============ -->
+<div id="forgotModal" class="ov" role="dialog" aria-modal="true">
+  <div class="mc">
+    <button type="button" class="x" data-ov-close>&times;</button>
+    <div id="fStep1">
+      <h2><i class="fas fa-key"></i>Recuperar acesso</h2>
+      <p class="lead">Indique o <strong>email</strong> e o <strong>nome completo</strong> exatamente como foram registados.
+        Se não tiver email registado, peça ao gestor ou ao suporte para atualizar os seus dados.</p>
+      <form id="forgotForm" novalidate>
+        <div class="f"><label>Email registado <span class="r">*</span></label>
+          <div class="ig"><i class="fas fa-envelope"></i><input class="in" type="email" id="fEmail" placeholder="email@exemplo.co.mz" required></div></div>
+        <div class="f"><label>Nome completo <span class="r">*</span></label>
+          <div class="ig"><i class="fas fa-id-card"></i><input class="in" type="text" id="fName" placeholder="Nome usado no registo" required></div></div>
+        <div id="fMsg" class="msg hidden"></div>
+        <button type="submit" class="btn-p" id="fBtn"><i class="fas fa-paper-plane"></i> Enviar código</button>
+        <button type="button" class="btn-s" data-ov-close>Cancelar</button>
+      </form>
+    </div>
+    <div id="fStep2" class="hidden">
+      <h2><i class="fas fa-shield-alt"></i>Nova senha</h2>
+      <p class="lead" id="fStep2Text">Insira o código de 6 dígitos que recebeu por email e defina a nova senha.</p>
+      <form id="resetForm" novalidate>
+        <div class="f"><label>Código</label>
+          <div class="ig"><i class="fas fa-barcode"></i><input class="in" type="text" id="rCode" inputmode="numeric" maxlength="6" placeholder="000000" required></div></div>
+        <div class="f"><label>Nova senha</label>
+          <div class="ig"><i class="fas fa-lock"></i><input class="in pr" type="password" id="rPass" placeholder="Mínimo 6 caracteres" autocomplete="new-password" required>
+            <button type="button" class="eye" data-eye="rPass"><i class="fas fa-eye"></i></button></div></div>
+        <div class="f"><label>Confirmar senha</label>
+          <div class="ig"><i class="fas fa-lock"></i><input class="in" type="password" id="rPass2" placeholder="Repita a senha" autocomplete="new-password" required></div></div>
+        <div id="rMsg" class="msg hidden"></div>
+        <button type="submit" class="btn-p" id="rBtn"><i class="fas fa-check-circle"></i> Alterar senha</button>
+        <button type="button" class="btn-s" id="rBack"><i class="fas fa-arrow-left"></i> Voltar</button>
+      </form>
+    </div>
+    <div id="fStep3" class="hidden center">
+      <div class="ok-ic"><i class="fas fa-check"></i></div>
+      <h2 id="fDoneTitle">Senha alterada!</h2>
+      <p class="lead" id="fDoneText">Já pode entrar com a nova senha.</p>
+      <button type="button" class="btn-p" id="fFinish">Ir para o login</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ REGISTAR EMPRESA ============ -->
+<div id="registerModal" class="ov" role="dialog" aria-modal="true">
+  <div class="mc">
+    <button type="button" class="x" data-ov-close>&times;</button>
+    <div id="gStep1">
+      <h2><i class="fas fa-building"></i>Registar empresa</h2>
+      <p class="lead">Registe o seu provedor de água. O sistema gera o <strong>código da empresa</strong> (que é o utilizador do gestor)
+        e uma <strong>senha temporária</strong>, que terá de mudar no primeiro acesso.</p>
+      <form id="registerForm" novalidate autocomplete="off">
+        <fieldset>
+          <legend><i class="fas fa-building"></i> Dados da empresa</legend>
+          <div class="f"><label>Nome da empresa <span class="r">*</span></label>
+            <div class="ig"><i class="fas fa-briefcase"></i><input class="in" name="name" placeholder="Ex.: Águas do Bairro, Lda" required></div></div>
+          <div class="grid2">
+            <div class="f"><label>NUIT</label><div class="ig"><i class="fas fa-id-card"></i><input class="in" name="nuit" placeholder="400123456"></div></div>
+            <div class="f"><label>Telefone <span class="r">*</span></label><div class="ig"><i class="fas fa-phone"></i><input class="in" name="phone" placeholder="84 123 4567" required></div></div>
+          </div>
+          <div class="f"><label>Email da empresa</label><div class="ig"><i class="fas fa-envelope"></i><input class="in" type="email" name="email" placeholder="geral@empresa.co.mz"></div></div>
+          <div class="f"><label>Endereço / localização</label><div class="ig"><i class="fas fa-map-marker-alt"></i><input class="in" name="address" placeholder="Bairro, rua"></div></div>
+          <div class="grid2">
+            <div class="f"><label>Cidade / distrito</label><div class="ig"><i class="fas fa-city"></i><input class="in" name="city" placeholder="Maputo"></div></div>
+            <div class="f"><label>Província</label><div class="ig"><i class="fas fa-map"></i><input class="in" name="province" placeholder="Maputo"></div></div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend><i class="fas fa-user-tie"></i> Gestor (responsável)</legend>
+          <div class="f"><label>Nome completo <span class="r">*</span></label><div class="ig"><i class="fas fa-user"></i><input class="in" name="manager_name" placeholder="Nome completo do gestor" required></div></div>
+          <div class="grid2">
+            <div class="f"><label>Email <span class="r">*</span></label><div class="ig"><i class="fas fa-envelope"></i><input class="in" type="email" name="manager_email" placeholder="gestor@empresa.co.mz" required></div></div>
+            <div class="f"><label>Telefone</label><div class="ig"><i class="fas fa-phone"></i><input class="in" name="manager_phone" placeholder="84 123 4567"></div></div>
+          </div>
+          <p class="lead" style="margin:0">O email e o nome do gestor servem para recuperar a senha. O email não pode estar a ser usado por outra conta.</p>
+        </fieldset>
+        <div id="gMsg" class="msg hidden"></div>
+        <button type="submit" class="btn-p" id="gBtn"><i class="fas fa-check-circle"></i> Registar empresa</button>
+        <button type="button" class="btn-s" data-ov-close>Cancelar</button>
+      </form>
+    </div>
+    <div id="gStep2" class="hidden">
+      <h2><i class="fas fa-check-circle"></i>Empresa registada!</h2>
+      <p class="lead">Guarde estes dados — a senha temporária <strong>não volta a ser mostrada</strong>.
+        No primeiro acesso o sistema pede uma nova senha. <span id="gPendingNote"></span></p>
+      <div class="creds">
+        <div class="cr"><div><div class="cl">Código da empresa / utilizador</div><div class="cv" id="gCode">—</div></div><button type="button" class="copy" data-copy="gCode"><i class="fas fa-copy"></i> Copiar</button></div>
+        <div class="cr"><div><div class="cl">Senha temporária</div><div class="cv" id="gPass">—</div></div><button type="button" class="copy" data-copy="gPass"><i class="fas fa-copy"></i> Copiar</button></div>
+        <div class="cr"><div><div class="cl">Email do gestor</div><div class="cv" id="gEmail" style="font-size:14px">—</div></div></div>
+      </div>
+      <div class="msg warning" id="gWait"><i class="fas fa-clock" style="margin-top:2px"></i>
+        <span><strong>Aguarde a aprovação.</strong><br>Para acelerar: <strong id="gSupport">861544303</strong></span></div>
+      <div class="cl" style="margin-bottom:8px"><i class="fas fa-download"></i> Descarregar dados</div>
+      <div class="dl-row">
+        <button type="button" class="dl pdf" id="gPdf"><i class="fas fa-file-pdf"></i> PDF (com utilizador e senha)</button>
+        <button type="button" class="dl csv" id="gCsv"><i class="fas fa-file-csv"></i> CSV</button>
+      </div>
+      <button type="button" class="btn-p" id="gLogin"><i class="fas fa-sign-in-alt"></i> Ir para o login</button>
+      <button type="button" class="btn-s" data-ov-close>Fechar</button>
+    </div>
+  </div>
+</div>

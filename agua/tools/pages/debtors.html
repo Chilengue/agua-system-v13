@@ -1,0 +1,21 @@
+title: Devedores
+scripts: /js/pages/debtors.js
+---
+<div class="stats-grid" id="stats"></div>
+<div class="panel">
+  <div class="panel-header">
+    <div><h2>Clientes que não pagam</h2><span class="muted">Dívida por antiguidade: ainda no prazo, até 30 dias, 31–90 dias e mais de 90 dias de atraso.</span></div>
+    <div class="page-actions"><button class="btn-secondary" id="btnPrint">Imprimir</button><button class="btn-secondary" id="btnCsv">Excel (CSV)</button></div>
+  </div>
+  <div class="toolbar">
+    <input type="search" id="q" placeholder="Nome, código, telefone ou bairro…">
+    <input type="number" id="minDebt" min="0" step="1" placeholder="Dívida mínima">
+    <label class="switch"><input type="checkbox" id="overdue"> Só com faturas vencidas</label>
+    <button class="btn-secondary" id="btnClear">Limpar</button>
+  </div>
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th>Cliente</th><th class="hide-sm">Bairro</th><th class="num hide-sm">Faturas</th><th class="num hide-sm">No prazo</th><th class="num hide-sm">≤30 dias</th><th class="num hide-sm">31–90</th><th class="num hide-sm">&gt;90</th><th class="num">Total</th><th class="hide-sm">Último pag.</th><th></th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table></div>
+  <div class="pager" id="pager"></div>
+</div>

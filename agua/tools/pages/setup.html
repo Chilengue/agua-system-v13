@@ -1,0 +1,16 @@
+title: Configuração inicial
+layout: plain
+scripts: /js/pages/auth.js
+---
+<div class="auth">
+  <form class="auth-card" id="setupForm">
+    <div class="brand"><div><h1>Bem-vindo ao AguaSystem</h1><span class="muted">Crie a conta do administrador da plataforma</span></div></div>
+    <div class="field"><label>Nome completo</label><input type="text" name="name" required></div>
+    <div class="field"><label>Utilizador</label><input type="text" name="username" placeholder="admin" required></div>
+    <div class="field"><label>Email</label><input type="email" name="email" required><small>Usado para recuperar a senha.</small></div>
+    <div class="field"><label>Senha (mín. 8)</label><input type="password" name="password" minlength="8" required></div>
+    <div class="field"><label>Confirmar senha</label><input type="password" name="confirm" minlength="8" required></div>
+    <div class="error" id="setupError"></div>
+    <button class="btn-primary btn-block btn-lg" type="submit">Criar administrador</button>
+  </form>
+</div>

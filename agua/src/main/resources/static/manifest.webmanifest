@@ -1,0 +1,10 @@
+{
+  "name": "AguaSystem",
+  "short_name": "AguaSystem",
+  "description": "Gestão e faturação de água — leituras no terreno, mesmo sem internet",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f8f7",
+  "theme_color": "#0f1a17",
+  "icons": [{ "src": "/img/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

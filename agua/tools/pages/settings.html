@@ -1,0 +1,144 @@
+title: Empresa e recibo
+scripts: /js/print-docs.js, /js/pages/settings.js
+---
+<div class="tabs" id="tabs">
+  <button class="tab active" data-t="company">Empresa</button>
+  <button class="tab" data-t="billing">Faturação, multas e juros</button>
+  <button class="tab" data-t="receipt">Recibo</button>
+  <button class="tab" data-t="payments">Pagamentos</button>
+  <button class="tab" data-t="messages">Mensagens (WhatsApp / SMS)</button>
+</div>
+
+<div class="tab-panel active" id="tab-company">
+  <div class="panel">
+    <div class="panel-header"><div><h2>Dados da empresa</h2><span class="muted">Aparecem no menu lateral, nos recibos, faturas, extratos e relatórios.</span></div></div>
+    <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:18px">
+      <div class="logo-box" id="logoBox"></div>
+      <div><input type="file" id="logoFile" accept="image/png,image/jpeg,image/webp" style="display:none">
+        <button class="btn-secondary" id="btnLogo">Escolher logótipo</button> <button class="btn-danger" id="btnLogoDel">Remover</button>
+        <div class="muted" style="margin-top:6px">PNG, JPG ou WEBP. A imagem é reduzida automaticamente.</div></div>
+    </div>
+    <form id="companyForm" class="form-grid cols-3">
+      <div class="field span-2"><label class="req">Nome da empresa (provedor)</label><input type="text" name="name" required maxlength="180"></div>
+      <div class="field"><label>NUIT</label><input type="text" name="nuit" maxlength="32"></div>
+      <div class="field"><label>Telefone</label><input type="tel" name="phone"></div>
+      <div class="field"><label>Email</label><input type="email" name="email"></div>
+      <div class="field"><label>Slogan / frase</label><input type="text" name="slogan" maxlength="200"></div>
+      <div class="field span-2"><label>Endereço / localização</label><input type="text" name="address"></div>
+      <div class="field"><label>Cidade / distrito</label><input type="text" name="city" maxlength="120"></div>
+      <div class="field"><label>Província</label><input type="text" name="province" maxlength="120"></div>
+      <div class="form-actions" style="grid-column:1/-1"><button class="btn-primary" type="submit">Guardar dados da empresa</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="tab-panel" id="tab-billing">
+  <form id="billingForm" class="panel">
+    <div class="form-section">Faturação</div>
+    <div class="form-grid cols-3">
+      <div class="field"><label>Moeda</label><input type="text" name="currency" maxlength="10"></div>
+      <div class="field"><label>Dias para pagar a fatura</label><input type="number" name="invoice_due_days" min="1" max="120"></div>
+      <div class="field"><label>Dia habitual de leitura</label><input type="number" name="reading_day" min="1" max="28"></div>
+      <div class="field"><label>Prefixo das faturas</label><input type="text" name="invoice_prefix" maxlength="6"></div>
+      <div class="field"><label>Prefixo dos recibos</label><input type="text" name="receipt_prefix" maxlength="6"></div>
+      <div class="field"><label>&nbsp;</label><label class="switch"><input type="checkbox" name="auto_bill"> Faturar automaticamente quando a leitura chega</label></div>
+      <div class="field"><label>&nbsp;</label><label class="switch"><input type="checkbox" name="allow_offline_readings"> Permitir leituras sem internet</label></div>
+    </div>
+    <div class="form-section">Multa por atraso</div>
+    <div class="form-grid cols-3">
+      <div class="field"><label>&nbsp;</label><label class="switch"><input type="checkbox" name="fine_enabled"> Cobrar multa</label></div>
+      <div class="field"><label>Tipo</label><select name="fine_type"><option value="percent">Percentagem da fatura</option><option value="fixed">Valor fixo</option></select></div>
+      <div class="field"><label>Valor da multa</label><input type="number" name="fine_value" min="0" step="0.01"></div>
+      <div class="field"><label>Dias de tolerância</label><input type="number" name="fine_grace_days" min="0" max="365"></div>
+    </div>
+    <div class="form-section">Juros de mora</div>
+    <div class="form-grid cols-3">
+      <div class="field"><label>&nbsp;</label><label class="switch"><input type="checkbox" name="interest_enabled"> Cobrar juros</label></div>
+      <div class="field"><label>Juros por mês de atraso (%)</label><input type="number" name="interest_monthly_percent" min="0" max="100" step="0.01"></div>
+    </div>
+    <p class="muted" style="margin-top:12px">Multas e juros são atualizados todos os dias às 00:30 (ou em Faturas → "Atualizar multas e juros"). Tarifas em <a href="/tariffs">Tarifas</a>.</p>
+    <div class="form-actions"><button class="btn-primary" type="submit">Guardar regras</button></div>
+  </form>
+</div>
+
+<div class="tab-panel" id="tab-receipt">
+  <div class="two-cols wide-right">
+    <form id="receiptForm" class="panel">
+      <div class="form-section">Formato</div>
+      <div class="form-grid cols-2">
+        <div class="field"><label>Papel</label><select name="receipt_format"><option value="a5">A5</option><option value="a4">A4</option><option value="thermal80">Térmico 80 mm</option><option value="thermal58">Térmico 58 mm</option></select></div>
+        <div class="field"><label>Orientação</label><select name="receipt_orientation"><option value="landscape">Horizontal</option><option value="portrait">Vertical</option></select></div>
+        <div class="field"><label>Cópias (vias)</label><input type="number" name="receipt_copies" min="1" max="3"></div>
+        <div class="field"><label>Cor</label><input type="color" name="receipt_accent" style="height:42px;padding:4px"></div>
+        <div class="field span-2"><label>Título</label><input type="text" name="receipt_title" maxlength="60" placeholder="RECIBO"></div>
+      </div>
+      <div class="form-section">Mostrar</div>
+      <label class="switch"><input type="checkbox" name="receipt_show_logo"> Logótipo</label>
+      <label class="switch" style="margin-top:8px"><input type="checkbox" name="receipt_show_readings"> Leitura anterior e atual</label>
+      <label class="switch" style="margin-top:8px"><input type="checkbox" name="receipt_show_debt"> Quanto falta e dívida total</label>
+      <label class="switch" style="margin-top:8px"><input type="checkbox" name="receipt_show_signature"> Linhas de assinatura</label>
+      <div class="form-section">Textos</div>
+      <div class="field"><label>Cabeçalho (por baixo do nome)</label><textarea name="receipt_header" rows="2" placeholder="Ex.: Abastecimento de água — Bairro 25 de Junho"></textarea></div>
+      <div class="field" style="margin-top:10px"><label>Palavras especiais / avisos</label><textarea name="receipt_notes" rows="3" placeholder="Ex.: Corte de água após 2 meses sem pagar."></textarea></div>
+      <div class="field" style="margin-top:10px"><label>Rodapé</label><textarea name="receipt_footer" rows="2" placeholder="Ex.: Obrigado! Poupe água."></textarea></div>
+      <div class="form-actions"><button class="btn-primary" type="submit">Guardar recibo</button></div>
+    </form>
+    <div class="panel"><div class="panel-header"><h2>Pré-visualização</h2><span class="muted">Exemplo com dados fictícios</span></div><div class="receipt-preview" id="preview"></div></div>
+  </div>
+</div>
+
+<div class="tab-panel" id="tab-payments">
+  <form id="paymentsForm" class="panel">
+    <label class="switch"><input type="checkbox" name="require_payment_validation"> Pagamentos por M-Pesa, e-Mola, banco ou cartão ficam "por validar" até o gestor confirmar</label>
+    <div class="field" style="margin-top:14px"><label>Como pagar (aparece na fatura e no recibo)</label>
+      <textarea name="payment_instructions" rows="4" placeholder="Ex.: M-Pesa 84 123 4567 (Águas do Bairro) · BCI conta 123456789"></textarea></div>
+    <div class="form-actions"><button class="btn-primary" type="submit">Guardar</button></div>
+  </form>
+</div>
+
+<div class="tab-panel" id="tab-messages">
+  <div class="panel" id="msgLocked" style="display:none"></div>
+  <form id="messagingForm" style="display:none">
+    <div class="panel">
+      <div class="panel-header"><div><h2>Plano <span class="plan-tag" id="planTag"></span></h2><span class="muted" id="planInfo"></span></div></div>
+      <div class="form-section">WhatsApp — número da empresa que envia as mensagens de pagamentos</div>
+      <div class="form-grid cols-3">
+        <div class="field"><label class="req">Número de WhatsApp da empresa</label><input type="tel" name="whatsapp_number" placeholder="84 123 4567"><small>Aparece nas mensagens e é o número que envia.</small></div>
+        <div class="field span-2"><label>Como enviar</label><select name="whatsapp_mode">
+          <option value="link">Abrir no WhatsApp do telemóvel/computador da empresa (sem custos)</option>
+          <option value="api">Automático pela API do WhatsApp Business (Meta Cloud API)</option></select></div>
+        <div class="field wa-api"><label>Phone number ID (Meta)</label><input type="text" name="whatsapp_phone_id" maxlength="60" placeholder="1234567890"></div>
+        <div class="field span-2 wa-api"><label>Token de acesso (Meta)</label><input type="password" name="whatsapp_token" autocomplete="new-password" placeholder="Deixe vazio para manter o atual"><small id="waTokenInfo"></small></div>
+      </div>
+      <div id="smsSection">
+        <div class="form-section">SMS — número/remetente da empresa (plano Enterprise)</div>
+        <div class="form-grid cols-3">
+          <div class="field"><label>Número ou nome do remetente</label><input type="text" name="sms_number" maxlength="40" placeholder="AguasBairro ou 84 123 4567"></div>
+          <div class="field span-2"><label>Como enviar</label><select name="sms_mode">
+            <option value="link">Abrir na aplicação de SMS do telemóvel (sem custos)</option>
+            <option value="api">Automático por gateway de SMS</option></select></div>
+          <div class="field span-2 sms-api"><label>Endereço do gateway (opcional)</label><input type="url" name="sms_api_url" placeholder="https://… (vazio = gateway da plataforma)"><small>Recebe POST JSON {"from","to","message"}.</small></div>
+          <div class="field sms-api"><label>Chave do gateway</label><input type="password" name="sms_api_token" autocomplete="new-password" placeholder="Manter a atual"><small id="smsTokenInfo"></small></div>
+        </div>
+      </div>
+      <div class="form-section">Envio automático</div>
+      <div class="form-grid cols-3">
+        <div class="field"><label>Canal</label><select name="msg_channel" id="msgChannel"><option value="whatsapp">WhatsApp</option><option value="sms">SMS</option><option value="both">WhatsApp e SMS</option></select></div>
+        <div class="field"><label>&nbsp;</label><label class="switch"><input type="checkbox" name="msg_on_invoice"> Avisar o cliente quando a fatura é emitida</label></div>
+        <div class="field"><label>&nbsp;</label><label class="switch"><input type="checkbox" name="msg_on_payment"> Enviar o recibo quando o cliente paga</label></div>
+      </div>
+      <p class="muted" style="margin-top:8px">No modo "abrir no telemóvel" as mensagens automáticas ficam em <a href="/messages?status=manual">Mensagens → Por abrir</a>.</p>
+    </div>
+    <div class="panel">
+      <div class="form-section" style="margin-top:0">Modelos das mensagens</div>
+      <div class="field"><label>Fatura emitida</label><textarea name="msg_invoice_template" rows="3" maxlength="1000"></textarea>
+        <div class="tpl-vars" data-for="msg_invoice_template">cliente nome codigo fatura mes conta leitura_anterior leitura_atual consumo valor total vencimento divida empresa como_pagar</div></div>
+      <div class="field" style="margin-top:12px"><label>Recibo de pagamento</label><textarea name="msg_payment_template" rows="3" maxlength="1000"></textarea>
+        <div class="tpl-vars" data-for="msg_payment_template">cliente nome codigo recibo pago data divida empresa</div></div>
+      <div class="field" style="margin-top:12px"><label>Lembrete de dívida</label><textarea name="msg_reminder_template" rows="3" maxlength="1000"></textarea>
+        <div class="tpl-vars" data-for="msg_reminder_template">cliente nome codigo faturas divida empresa telefone_empresa como_pagar</div></div>
+      <small class="muted">Vazio = modelo do sistema. Clique num campo para o inserir.</small>
+      <div class="form-actions"><button class="btn-primary" type="submit">Guardar mensagens</button></div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,43 @@
+title: Tarifas
+scripts: /js/pages/tariffs.js
+---
+<div class="panel">
+  <div class="panel-header"><div><h2>Como a empresa cobra a água</h2><span class="muted">Cada provedor define as suas regras. Escolha o modo de cálculo.</span></div></div>
+  <div class="tabs" id="modeTabs">
+    <button class="tab" data-m="minimum">Valor mínimo + preço por m³</button>
+    <button class="tab" data-m="tiers">Escalões por categoria</button>
+  </div>
+  <form id="tariffForm">
+    <div id="minBox">
+      <div class="alert info"><span>Exemplo: até <b>5 m³</b> paga sempre <b>350 MZN</b> (leitura mínima); cada m³ acima de 5 custa <b>70 MZN</b>.
+        Consumo de 8 m³ → 350 + 3 × 70 = <b>560 MZN</b>.</span></div>
+      <div class="form-grid cols-3">
+        <div class="field"><label>Consumo mínimo (m³)</label><input type="number" name="minimum_m3" min="0" step="1"></div>
+        <div class="field"><label>Valor mínimo a pagar</label><input type="number" name="minimum_charge" min="0" step="0.01"><small>Cobrado até ao consumo mínimo.</small></div>
+        <div class="field"><label>Preço por m³ acima do mínimo</label><input type="number" name="price_per_m3" min="0" step="0.01"></div>
+      </div>
+    </div>
+    <div id="tiersBox" style="display:none">
+      <p class="hint">Cada categoria de cliente pode ter escalões diferentes (se não tiver, usa os do Doméstico). Deixe "até" vazio no último escalão.</p>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Categoria</th><th class="num">De (m³)</th><th class="num">Até (m³)</th><th class="num">Preço por m³</th><th>Descrição</th><th></th></tr></thead><tbody id="tiers"></tbody></table></div>
+      <div class="form-actions" style="justify-content:flex-start"><button type="button" class="btn-secondary" id="btnAddTier">+ Escalão</button></div>
+      <div class="form-grid cols-3"><div class="field"><label>Valor mínimo da fatura (opcional)</label><input type="number" name="minimum_charge_t" min="0" step="0.01"></div></div>
+    </div>
+    <div class="form-section" style="margin-top:20px">Outras taxas</div>
+    <div class="form-grid cols-3">
+      <div class="field"><label>Taxa fixa mensal</label><input type="number" name="fixed_fee" min="0" step="0.01"></div>
+      <div class="field"><label>Saneamento (% da água)</label><input type="number" name="sewer_percent" min="0" max="100" step="0.01"></div>
+      <div class="field"><label>Alerta de consumo alto (m³)</label><input type="number" name="consumption_alert" min="1" step="1"></div>
+    </div>
+    <div class="form-actions"><button class="btn-primary" type="submit">Guardar tarifas</button></div>
+  </form>
+</div>
+<div class="panel">
+  <div class="panel-header"><h2>Simulador</h2></div>
+  <div class="toolbar">
+    <input type="number" id="simC" min="0" value="8" placeholder="Consumo m³" style="flex:0 1 150px">
+    <select id="simCat"><option value="residential">Doméstico</option><option value="commercial">Comercial</option><option value="public">Público</option><option value="industrial">Industrial</option></select>
+    <button class="btn-secondary" id="btnSim">Calcular</button>
+  </div>
+  <div id="simOut"></div>
+</div>

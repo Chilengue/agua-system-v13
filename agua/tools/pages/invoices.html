@@ -1,0 +1,65 @@
+title: Faturas
+scripts: /js/pages/invoices.js
+---
+<div class="panel">
+  <div class="panel-header">
+    <div><h2>Faturas</h2><span class="muted">Visualize e gira todas as faturas. Um cliente pode ter várias faturas e várias contas.</span></div>
+    <div class="page-actions">
+      <a class="btn-danger" href="/debtors">Devedores</a>
+      <button class="btn-secondary" id="btnCharges">Atualizar multas e juros</button>
+      <button class="btn-primary" id="btnNew">+ Nova fatura</button>
+    </div>
+  </div>
+  <div class="stats-grid" id="stats"></div>
+  <div class="toolbar">
+    <input type="search" id="q" placeholder="Nº de fatura, cliente, código, telefone ou conta…">
+    <select id="period"></select>
+    <input type="date" id="from" title="Emitidas desde"><input type="date" id="to" title="Emitidas até">
+    <button class="btn-secondary" id="btnClear">Limpar</button>
+    <span class="grow"></span>
+    <button class="btn-secondary" id="btnPrint">Imprimir</button>
+    <button class="btn-secondary" id="btnCsv">Excel (CSV)</button>
+  </div>
+  <div class="chips" id="chips">
+    <button class="chip active" data-f="">Todas</button>
+    <button class="chip orange" data-f="pending">Pendentes</button>
+    <button class="chip" data-f="paid">Pagas</button>
+    <button class="chip red" data-f="overdue">Vencidas</button>
+    <button class="chip blue" data-f="partial">Parciais</button>
+    <button class="chip" data-f="debt">Com saldo</button>
+    <button class="chip" data-f="cancelled">Anuladas</button>
+  </div>
+  <div id="custFilter"></div>
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th>Nº fatura</th><th>Cliente</th><th class="hide-sm">Mês</th><th class="hide-sm">Vencimento</th><th class="num hide-sm">Consumo</th><th class="num">Total</th><th class="num hide-sm">Pago</th><th class="num">Saldo</th><th>Estado</th><th></th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table></div>
+  <div class="pager" id="pager"></div>
+</div>
+
+<div class="modal" id="viewModal">
+  <div class="modal-content wide">
+    <div class="modal-head"><h2 id="viewTitle"></h2><button class="x-close" data-close="viewModal">×</button></div>
+    <div id="viewBody"></div>
+  </div>
+</div>
+
+<div class="modal" id="newModal">
+  <div class="modal-content">
+    <div class="modal-head"><h2>Nova fatura</h2><button class="x-close" data-close="newModal">×</button></div>
+    <p class="muted" style="margin-bottom:12px">Faturas de consumo são criadas a partir das leituras. Aqui cria uma fatura avulsa (ligação, religação, multa, serviço…) para uma conta.</p>
+    <div class="field"><label>Conta do cliente</label><input type="search" id="accQ" placeholder="Nome, código, telefone ou nº de conta…"></div>
+    <div id="accResults" class="cust-list" style="margin:10px 0;max-height:220px;overflow:auto"></div>
+    <form id="newForm" style="display:none">
+      <div class="alert info" id="accInfo"></div>
+      <div class="form-grid cols-2">
+        <div class="field span-2"><label class="req">Descrição</label><input type="text" name="description" maxlength="200" required placeholder="Ex.: Taxa de ligação"></div>
+        <div class="field"><label class="req">Valor</label><input type="number" name="amount" min="0.01" step="0.01" required></div>
+        <div class="field"><label>Mês de referência</label><input type="month" name="period"></div>
+        <div class="field"><label>Vencimento</label><input type="date" name="due_date"></div>
+        <div class="field"><label>Observações</label><input type="text" name="notes"></div>
+      </div>
+      <div class="form-actions"><button type="button" class="btn-secondary" data-close="newModal">Cancelar</button><button class="btn-primary" type="submit">Criar fatura</button></div>
+    </form>
+  </div>
+</div>

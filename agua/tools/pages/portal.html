@@ -1,0 +1,19 @@
+title: Minha conta
+scripts: /vendor/jspdf.umd.min.js, /js/print-docs.js, /js/pages/portal.js
+---
+<div class="stats-grid" id="stats"></div>
+<div class="panel">
+  <div class="panel-header"><h2>As minhas contas</h2>
+    <div class="page-actions"><button class="btn-secondary" id="btnStAll">Extrato (todas as contas)</button><button class="btn-secondary" id="btnStEach">Extrato (uma por página)</button></div></div>
+  <div id="accounts"></div>
+</div>
+<div class="panel">
+  <div class="panel-header"><h2>Faturas</h2></div>
+  <div class="chips" id="chips"><button class="chip active" data-f="">Todas</button><button class="chip red" data-f="debt">Por pagar</button><button class="chip" data-f="paid">Pagas</button></div>
+  <div class="table-wrap"><table class="table"><thead><tr><th>Fatura</th><th class="hide-sm">Conta</th><th>Mês</th><th class="num hide-sm">Leituras</th><th class="num">Total</th><th class="num">Saldo</th><th>Estado</th><th></th></tr></thead><tbody id="invoices"></tbody></table></div>
+</div>
+<div class="two-cols">
+  <div class="panel"><div class="panel-header"><div><h2>Os meus recibos</h2><span class="muted">Veja, imprima ou baixe cada recibo em PDF.</span></div></div>
+    <div class="table-wrap"><table class="table"><thead><tr><th>Recibo</th><th>Data</th><th class="num">Valor</th><th></th></tr></thead><tbody id="payments"></tbody></table></div></div>
+  <div class="panel"><div class="panel-header"><h2>Consumo (m³)</h2></div><div class="bars" id="chart"></div></div>
+</div>

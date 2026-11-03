@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1a17">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/app.css">
+  <title>Caixa · AguaSystem</title>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar"></aside>
+    <main class="main-content">
+      <header class="topbar"></header>
+      <section id="content">
+        <div class="two-cols wide-right">
+          <div class="panel">
+            <div class="panel-header"><h2>1. Cliente</h2><button class="btn-secondary" id="btnCache" title="Guardar a lista de devedores neste aparelho">Guardar para usar sem internet</button></div>
+            <input type="search" id="q" placeholder="Nome, código, telefone, nº de conta ou de fatura…" autocomplete="off">
+            <div id="results" class="cust-list" style="margin-top:12px;max-height:560px;overflow:auto"></div>
+          </div>
+          <div class="panel" id="payPanel">
+            <div class="empty-state" id="noCustomer">Procure e escolha um cliente para ver as faturas em dívida.</div>
+            <div id="custBox" style="display:none">
+              <div class="panel-header">
+                <div><h2 id="custName"></h2><span class="muted" id="custInfo"></span></div>
+                <div style="text-align:right"><div class="muted">Dívida total</div><div class="pay-total" id="debtTotal"></div></div>
+              </div>
+              <div class="chips" id="accChips"></div>
+              <div class="table-wrap"><table class="table check-row">
+                <thead><tr><th><input type="checkbox" id="checkAll" checked></th><th>Fatura</th><th class="hide-sm">Conta</th><th>Mês</th><th class="num hide-sm">Leituras</th><th class="num hide-sm">Total</th><th class="num">Saldo</th></tr></thead>
+                <tbody id="invRows"></tbody>
+              </table></div>
+              <p class="muted" style="margin:8px 0 14px">Pode pagar qualquer valor até à dívida: o valor liquida primeiro as faturas mais antigas escolhidas.
+                Ex.: fatura de 300 → paga 100 (fica 200) → paga 250 (200 liquidam esta e 50 vão para a seguinte).</p>
+              <form id="payForm" class="form-grid cols-3">
+                <div class="field"><label class="req">Valor a pagar</label><input type="number" name="amount" min="0.01" step="0.01" required class="reading-input" style="font-size:24px!important"></div>
+                <div class="field"><label class="req">Método</label><select name="method"></select></div>
+                <div class="field"><label>Referência (M-Pesa, banco…)</label><input type="text" name="reference" maxlength="120"></div>
+                <div class="field"><label>Data do pagamento</label><input type="date" name="paid_at"></div>
+                <div class="field span-2"><label>Observações</label><input type="text" name="notes"></div>
+                <div class="field span-3" id="payHint"></div>
+                <div class="form-actions span-3" style="grid-column:1/-1;margin-top:0">
+                  <a class="btn-secondary" id="lnkStatement" href="#">Extrato</a>
+                  <button type="button" class="btn-secondary" id="btnFull">Pagar tudo</button>
+                  <button class="btn-primary btn-lg" type="submit" id="btnPay">Receber e imprimir recibo</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><h2>Recebido hoje</h2><a class="btn-secondary" href="/payments">Todos os pagamentos</a></div>
+          <div class="table-wrap"><table class="table"><thead><tr><th>Recibo</th><th>Cliente</th><th class="hide-sm">Hora</th><th>Método</th><th class="num">Valor</th><th>Estado</th><th></th></tr></thead><tbody id="today"></tbody></table></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/js/app.js"></script>
+  <script src="/js/pages/cashier.js"></script>
+</body>
+</html>

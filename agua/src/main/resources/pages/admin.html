@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1a17">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/app.css">
+  <title>Administração · AguaSystem</title>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar"></aside>
+    <main class="main-content">
+      <header class="topbar"></header>
+      <section id="content">
+        <!-- PAINEL -->
+        <section class="adm" id="s-dashboard">
+          <div class="panel-header" style="margin-bottom:16px"><div><h2 style="font-size:18px">Painel da plataforma</h2><span class="muted">Uso do sistema, dinheiro que entra e clientes que não pagam, em todas as empresas.</span></div>
+            <div class="page-actions"><select id="dPeriod" style="width:auto"></select><button class="btn-secondary" id="dPrint">Imprimir</button></div></div>
+          <div id="dAlerts"></div>
+          <div class="stats-grid cols-3" id="dKpis"></div>
+          <div class="panel"><div class="panel-header"><div><h2>Planos de negócio</h2><span class="muted">Empresas e clientes em cada plano. Clique para ver as empresas.</span></div><a class="btn-secondary" href="#plans">Gerir planos</a></div>
+            <div class="plans-grid" id="dPlans" style="margin:0"></div></div>
+          <div class="two-cols">
+            <div class="panel"><div class="panel-header"><h2>Recebido vs. faturado (todas as empresas)</h2></div><div class="bars" id="dChart"></div>
+              <div class="legend"><span><i style="background:#cbd5e1"></i>Faturado</span><span><i style="background:var(--primary)"></i>Recebido</span></div></div>
+            <div class="panel"><div class="panel-header"><h2>Uso do sistema (acessos por mês)</h2></div><div class="bars" id="dUsage"></div>
+              <div class="legend"><span><i style="background:#8b5cf6"></i>Acessos</span><span><i style="background:var(--primary)"></i>Novos clientes</span></div></div>
+          </div>
+          <div class="two-cols">
+            <div class="panel"><div class="panel-header"><h2>Recebido no mês por empresa</h2><a class="btn-secondary" href="#companies">Empresas</a></div><div class="hbars" id="dByCompany"></div></div>
+            <div class="panel"><div class="panel-header"><h2>Clientes que não pagam</h2><a class="btn-secondary" href="#debtors">Todos</a></div>
+              <div class="table-wrap"><table class="table"><thead><tr><th>Cliente</th><th class="hide-sm">Empresa</th><th class="num">Dívida</th></tr></thead><tbody id="dDebtors"></tbody></table></div></div>
+          </div>
+        </section>
+
+        <!-- LISTAS GENÉRICAS -->
+        <section class="adm" id="s-list" style="display:none">
+          <div class="stats-grid" id="lStats"></div>
+          <div class="panel">
+            <div class="panel-header"><div><h2 id="lTitle"></h2><span class="muted" id="lHint"></span></div>
+              <div class="page-actions"><button class="btn-secondary" id="lPrint">Imprimir</button><button class="btn-secondary" id="lCsv">Excel (CSV)</button><span id="lExtra"></span></div></div>
+            <div class="toolbar" id="lToolbar"></div>
+            <div class="chips" id="lChips"></div>
+            <div class="table-wrap"><table class="table"><thead id="lHead"></thead><tbody id="lRows"></tbody></table></div>
+            <div class="pager" id="lPager"></div>
+          </div>
+        </section>
+
+        <!-- RELATÓRIOS -->
+        <section class="adm" id="s-reports" style="display:none">
+          <div class="panel">
+            <div class="panel-header"><div><h2>Relatórios da plataforma</h2><span class="muted">Escolha os filtros e imprima ou baixe em Excel (CSV).</span></div></div>
+            <div class="toolbar"><select id="rCompany"><option value="">Todas as empresas</option></select><input type="date" id="rFrom"><input type="date" id="rTo"><select id="rPeriod"></select></div>
+            <div class="shortcuts" id="rList"></div>
+          </div>
+        </section>
+
+        <div class="modal" id="mDetail"><div class="modal-content xl"><div class="modal-head"><h2 id="mTitle"></h2><button class="x-close" data-close="mDetail">×</button></div><div id="mBody"></div></div></div>
+
+        <div class="modal" id="mCompany" data-static><div class="modal-content wide">
+          <div class="modal-head"><h2 id="cTitle">Nova empresa</h2><button class="x-close" data-close="mCompany">×</button></div>
+          <form id="cForm">
+            <div class="form-section">Empresa</div>
+            <div class="form-grid cols-3">
+              <div class="field span-2"><label class="req">Nome</label><input type="text" name="name" required></div>
+              <div class="field"><label>NUIT</label><input type="text" name="nuit"></div>
+              <div class="field"><label class="req">Telefone</label><input type="tel" name="phone"></div>
+              <div class="field"><label>Email</label><input type="email" name="email"></div>
+              <div class="field"><label>Slogan</label><input type="text" name="slogan"></div>
+              <div class="field span-2"><label>Endereço</label><input type="text" name="address"></div>
+              <div class="field"><label>Cidade</label><input type="text" name="city"></div>
+              <div class="field"><label>Província</label><input type="text" name="province"></div>
+            </div>
+            <div id="cPlan"><div class="form-section">Plano</div>
+            <div class="form-grid cols-3"><div class="field"><label>Plano de negócio</label><select name="plan"><option value="basic">Básico — sem WhatsApp/SMS</option><option value="standard">Standard — WhatsApp</option><option value="enterprise">Enterprise — WhatsApp e SMS</option></select></div></div></div>
+            <div id="cManager"><div class="form-section">Gestor</div>
+            <div class="form-grid cols-3">
+              <div class="field"><label class="req">Nome completo</label><input type="text" name="manager_name"></div>
+              <div class="field"><label class="req">Email</label><input type="email" name="manager_email"></div>
+              <div class="field"><label>Telefone</label><input type="tel" name="manager_phone"></div>
+            </div></div>
+            <div class="form-actions"><button type="button" class="btn-secondary" data-close="mCompany">Cancelar</button><button class="btn-primary" type="submit">Guardar</button></div>
+          </form>
+        </div></div>
+
+        <div class="modal" id="mUser" data-static><div class="modal-content">
+          <div class="modal-head"><h2 id="uTitle">Utilizador</h2><button class="x-close" data-close="mUser">×</button></div>
+          <p class="muted" style="margin-bottom:12px">O email é único: serve para entrar e para recuperar a senha (com o nome completo).</p>
+          <form id="uForm" class="form-grid cols-2">
+            <div class="field span-2"><label class="req">Nome completo</label><input type="text" name="name" required></div>
+            <div class="field"><label>Email</label><input type="email" name="email"></div>
+            <div class="field"><label>Telefone</label><input type="tel" name="phone"></div>
+            <div class="field"><label>Estado</label><select name="status"><option value="active">Ativo</option><option value="blocked">Bloqueado</option></select></div>
+            <div class="form-actions" style="grid-column:1/-1"><button type="button" class="btn-secondary" data-close="mUser">Cancelar</button><button class="btn-primary" type="submit">Guardar</button></div>
+          </form>
+        </div></div>
+
+        <div class="modal" id="mPlan" data-static><div class="modal-content" style="max-width:520px">
+          <div class="modal-head"><h2 id="pTitle">Plano</h2><button class="x-close" data-close="mPlan">×</button></div>
+          <form id="pForm">
+            <div class="plan-choice">
+              <label><input type="radio" name="plan" value="basic"><div><b>Básico</b><div class="muted">Faturação, leituras, caixa e portal do cliente. Sem WhatsApp e sem SMS.</div></div></label>
+              <label><input type="radio" name="plan" value="standard"><div><b>Standard</b><div class="muted">Tudo do Básico + avisos de faturas, recibos e lembretes por WhatsApp.</div></div></label>
+              <label><input type="radio" name="plan" value="enterprise"><div><b>Enterprise</b><div class="muted">Tudo do Standard + mensagens por SMS.</div></div></label>
+            </div>
+            <div class="field" style="margin-top:12px"><label>Nota (opcional)</label><input type="text" name="reason" maxlength="500" placeholder="Ex.: pagou a mensalidade de novembro"></div>
+            <p class="muted" style="margin-top:8px">Ao descer para o Básico, o módulo de mensagens desaparece da empresa e os envios automáticos são desligados.</p>
+            <div class="form-actions"><button type="button" class="btn-secondary" data-close="mPlan">Cancelar</button><button class="btn-primary" type="submit">Guardar plano</button></div>
+          </form>
+        </div></div>
+      </section>
+    </main>
+  </div>
+  <script src="/js/app.js"></script>
+  <script src="/js/pages/admin.js"></script>
+</body>
+</html>

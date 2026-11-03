@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1a17">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/app.css">
+  <title>Clientes · AguaSystem</title>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar"></aside>
+    <main class="main-content">
+      <header class="topbar"></header>
+      <section id="content">
+        <div class="stats-grid" id="stats"></div>
+        <div class="panel">
+          <div class="panel-header">
+            <div><h2>Clientes</h2><span class="muted">Um cliente pode ter várias contas (contratos), cada uma com o seu contador e as suas faturas.</span></div>
+            <div class="page-actions">
+              <button class="btn-secondary" id="btnPrint">Imprimir</button>
+              <button class="btn-secondary" id="btnCsv">Excel (CSV)</button>
+              <button class="btn-primary" id="btnNew">+ Novo cliente</button>
+            </div>
+          </div>
+          <div class="toolbar">
+            <input type="search" id="q" placeholder="Nome, código, telefone, documento, nº de conta, contador ou fatura…">
+            <select id="nb" class="sm"><option value="">Todos os bairros</option></select>
+            <select id="sort" class="sm"><option value="">Ordenar: nome</option><option value="debt">Maior dívida</option><option value="recent">Mais recentes</option><option value="code">Código</option></select>
+            <select id="size" class="sm" style="flex:0 1 110px"><option value="20">20 por página</option><option value="50">50 por página</option><option value="100">100 por página</option></select>
+            <button class="btn-secondary" id="btnClear">Limpar</button>
+          </div>
+          <div class="chips" id="chips">
+            <button class="chip active" data-f="">Todos</button>
+            <button class="chip" data-f="active">Ativos</button>
+            <button class="chip red" data-f="debtor">Com dívida</button>
+            <button class="chip red" data-f="overdue">Com faturas vencidas</button>
+            <button class="chip" data-f="clear">Sem dívida</button>
+            <button class="chip orange" data-f="noaccess">Sem acesso ao portal</button>
+            <button class="chip" data-f="inactive">Inativos</button>
+          </div>
+          <div class="table-wrap"><table class="table">
+            <thead><tr><th>Cliente</th><th class="hide-sm">Contacto</th><th class="hide-sm">Bairro</th><th class="hide-sm">Contas</th><th class="num">Em dívida</th><th class="hide-sm">Último pagamento</th><th>Estado</th><th></th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table></div>
+          <div class="pager" id="pager"></div>
+        </div>
+        <datalist id="nbList"></datalist>
+
+        <!-- Registo / edição -->
+        <div class="modal" id="formModal" data-static>
+          <div class="modal-content wide">
+            <div class="modal-head"><h2 id="formTitle">Novo cliente</h2><button class="x-close" data-close="formModal">×</button></div>
+            <div class="steps" id="steps">
+              <button type="button" class="active" data-s="1"><b>1</b>Identificação</button>
+              <button type="button" data-s="2"><b>2</b>Contactos e morada</button>
+              <button type="button" data-s="3" id="step3btn"><b>3</b>Conta e contador</button>
+            </div>
+            <form id="custForm" autocomplete="off">
+              <div class="step active" data-step="1">
+                <div class="form-grid cols-3">
+                  <div class="field span-2"><label class="req">Nome completo</label><input type="text" name="name" required maxlength="180" placeholder="Nome e apelido"></div>
+                  <div class="field"><label>Género</label><select name="gender"><option value="">—</option><option value="M">Masculino</option><option value="F">Feminino</option></select></div>
+                  <div class="field"><label>Tipo de documento</label><select name="document_type"><option value="bi">BI</option><option value="passport">Passaporte</option><option value="dire">DIRE</option><option value="nuit">NUIT</option><option value="other">Outro</option></select></div>
+                  <div class="field"><label>Nº do documento</label><input type="text" name="document" maxlength="50" data-check="document"><small>Não pode repetir noutro cliente.</small></div>
+                  <div class="field"><label>NUIT</label><input type="text" name="nuit" maxlength="32" inputmode="numeric" data-check="nuit"></div>
+                  <div class="field"><label>Data de nascimento</label><input type="date" name="birth_date"></div>
+                  <div class="field"><label>Profissão / atividade</label><input type="text" name="occupation" maxlength="120"></div>
+                  <div class="field"><label>Estado</label><select name="status"><option value="active">Ativo</option><option value="inactive">Inativo</option></select></div>
+                </div>
+              </div>
+              <div class="step" data-step="2">
+                <div class="form-grid cols-3">
+                  <div class="field"><label class="req">Telefone</label><input type="tel" name="phone" required placeholder="84 123 4567" data-check="phone"><small>Usado para WhatsApp/SMS. Não pode repetir.</small></div>
+                  <div class="field"><label>Telefone alternativo</label><input type="tel" name="phone2" placeholder="86 …"></div>
+                  <div class="field"><label>Email</label><input type="email" name="email"><small>Serve para o cliente recuperar a senha.</small></div>
+                  <div class="field span-2"><label>Endereço / rua</label><input type="text" name="address" placeholder="Av./Rua, referência"></div>
+                  <div class="field"><label>Bairro</label><input type="text" name="neighborhood" maxlength="120" list="nbList" placeholder="Escolha ou escreva"></div>
+                  <div class="field"><label>Quarteirão</label><input type="text" name="block" maxlength="40"></div>
+                  <div class="field"><label>Nº da casa</label><input type="text" name="house_number" maxlength="40"></div>
+                  <div class="field"><label>Distrito</label><input type="text" name="district" maxlength="120"></div>
+                  <div class="field"><label>Cidade</label><input type="text" name="city" maxlength="120"></div>
+                  <div class="field span-2"><label>Observações</label><input type="text" name="notes"></div>
+                </div>
+              </div>
+              <div class="step" data-step="3" id="accountSection">
+                <p class="form-hint">Primeira conta (contrato) do cliente. Para outra casa do mesmo cliente, adicione depois uma nova conta na ficha.</p>
+                <div class="form-grid cols-3" id="accFields"></div>
+              </div>
+              <div id="dupWarn"></div>
+              <div class="form-actions">
+                <button type="button" class="btn-secondary" data-close="formModal">Cancelar</button>
+                <button type="button" class="btn-secondary" id="btnPrev" style="display:none">‹ Anterior</button>
+                <button type="button" class="btn-secondary" id="btnNext">Seguinte ›</button>
+                <button type="button" class="btn-secondary" id="btnSaveNew">Guardar e registar outro</button>
+                <button class="btn-primary" type="submit" id="btnSave">Guardar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Conta -->
+        <div class="modal" id="accModal" data-static>
+          <div class="modal-content wide">
+            <div class="modal-head"><h2 id="accTitle">Nova conta</h2><button class="x-close" data-close="accModal">×</button></div>
+            <form id="accForm" autocomplete="off"><div class="form-grid cols-3" id="accFields2"></div>
+              <div class="form-actions"><button type="button" class="btn-secondary" data-close="accModal">Cancelar</button><button class="btn-primary" type="submit">Guardar conta</button></div></form>
+          </div>
+        </div>
+
+        <!-- Detalhe -->
+        <div class="modal" id="viewModal">
+          <div class="modal-content xl">
+            <div class="modal-head"><h2 id="viewTitle"></h2><button class="x-close" data-close="viewModal">×</button></div>
+            <div id="viewBody"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/js/app.js"></script>
+  <script src="/js/pages/customers.js"></script>
+</body>
+</html>

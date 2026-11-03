@@ -1,0 +1,40 @@
+title: Leituras
+scripts: /js/offline-store.js,/js/pages/reader.js
+---
+<div class="panel" id="syncBar" style="padding:14px 16px">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <div><strong id="queueInfo">0 leituras por enviar</strong><div class="muted" id="cacheInfo">Lista de contas ainda não descarregada</div></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-secondary" id="btnDownload" title="Descarregar lista de clientes">Atualizar lista</button>
+      <button class="btn-primary" id="btnSync">Enviar</button>
+    </div>
+  </div>
+</div>
+
+<div class="reader-search">
+  <input type="search" id="q" placeholder="Nome, código, telefone, nº de conta, contador ou fatura…" autocomplete="off">
+  <label class="switch" style="margin-top:10px"><input type="checkbox" id="onlyMissing" checked> Só contas por ler este mês</label>
+</div>
+<div class="cust-list" id="list"></div>
+
+<div class="panel" style="margin-top:20px">
+  <h2 style="margin-bottom:12px">Leituras deste dispositivo</h2>
+  <div id="queueList" class="cust-list"></div>
+</div>
+
+<div class="modal" id="readModal">
+  <form class="modal-content" id="readForm" style="max-width:460px">
+    <h2 id="rName"></h2>
+    <div class="kv">
+      <div><small>Código</small><code id="rCode"></code></div>
+      <div><small>Contador</small><span id="rMeter"></span></div>
+      <div><small>Leitura anterior</small><span class="big-number" id="rLast"></span><small id="rLastWhen"></small></div>
+      <div><small>Consumo</small><span class="big-number" id="rCons">—</span></div>
+    </div>
+    <div class="field"><label>Leitura atual (m³)</label><input type="number" inputmode="numeric" id="rValue" class="reading-input" min="0" required></div>
+    <div class="pay-box" id="rPay" style="display:none"></div>
+    <div class="field" style="margin-top:12px"><label>Observação (opcional)</label><input type="text" id="rNotes" placeholder="Ex.: contador avariado, casa fechada…"></div>
+    <p class="muted" id="rWarn" style="margin-top:10px"></p>
+    <div class="form-actions"><button type="button" class="btn-secondary" data-close="readModal">Cancelar</button><button class="btn-primary btn-lg" type="submit">Guardar leitura</button></div>
+  </form>
+</div>

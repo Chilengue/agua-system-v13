@@ -1,0 +1,63 @@
+title: Utilizadores
+scripts: /js/pages/team.js
+---
+<div class="tabs" id="tabs">
+  <button class="tab active" data-t="readers">Mediadores</button>
+  <button class="tab" data-t="customers">Acessos dos clientes</button>
+  <button class="tab" data-t="resets">Pedidos de senha <span id="resetCount"></span></button>
+</div>
+
+<div class="tab-panel active" id="tab-readers">
+  <div class="panel">
+    <div class="panel-header">
+      <div><h2>Mediadores (leitores de contadores)</h2><span class="muted">Cada mediador recebe um utilizador (ex.: MED-VJA3-01) e uma senha temporária. Trabalha no telemóvel, com ou sem internet.</span></div>
+      <div class="page-actions"><button class="btn-secondary" id="btnPrint">Imprimir</button><button class="btn-primary" id="btnNew">+ Novo mediador</button></div>
+    </div>
+    <div class="table-wrap"><table class="table">
+      <thead><tr><th>Nome</th><th>Utilizador</th><th class="hide-sm">Contactos</th><th class="num">Leituras no mês</th><th class="hide-sm">Último acesso</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+  </div>
+</div>
+
+<div class="tab-panel" id="tab-customers">
+  <div class="panel">
+    <div class="panel-header">
+      <div><h2>Acessos dos clientes ao portal</h2><span class="muted">Bloquear, desbloquear, gerar nova senha ou remover o acesso. Os dados do cliente (contas, faturas, pagamentos) nunca são apagados aqui.</span></div>
+    </div>
+    <div class="toolbar"><input type="search" id="cq" placeholder="Nome, utilizador, email ou telefone…"><button class="btn-secondary" id="cClear">Limpar</button></div>
+    <div class="chips" id="cChips">
+      <button class="chip active" data-f="">Todos</button><button class="chip" data-f="active">Ativos</button>
+      <button class="chip red" data-f="blocked">Bloqueados</button><button class="chip orange" data-f="never">Nunca entraram</button>
+    </div>
+    <div class="table-wrap"><table class="table">
+      <thead><tr><th>Cliente</th><th>Utilizador</th><th class="hide-sm">Contactos</th><th class="hide-sm">Último acesso</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="cRows"></tbody>
+    </table></div>
+    <div class="pager" id="cPager"></div>
+  </div>
+</div>
+
+<div class="tab-panel" id="tab-resets">
+  <div class="panel">
+    <div class="panel-header"><div><h2>Pedidos de recuperação de senha</h2><span class="muted">Mediadores e clientes que pediram nova senha no login. Gere uma senha temporária e entregue-a à pessoa.</span></div></div>
+    <div class="chips" id="rChips"><button class="chip active orange" data-f="pending">Pendentes</button><button class="chip" data-f="">Todos</button></div>
+    <div class="table-wrap"><table class="table">
+      <thead><tr><th>Pedido</th><th>Utilizador</th><th class="hide-sm">Contactos</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="rRows"></tbody>
+    </table></div>
+  </div>
+</div>
+
+<div class="modal" id="formModal">
+  <div class="modal-content">
+    <div class="modal-head"><h2 id="formTitle">Novo mediador</h2><button class="x-close" data-close="formModal">×</button></div>
+    <form id="form" class="form-grid cols-2">
+      <div class="field span-2"><label class="req">Nome completo</label><input type="text" name="name" required maxlength="150"></div>
+      <div class="field"><label>Telefone</label><input type="tel" name="phone"></div>
+      <div class="field"><label>Email</label><input type="email" name="email"><small>Único; serve para recuperar a senha.</small></div>
+      <div class="field" id="statusField"><label>Estado</label><select name="status"><option value="active">Ativo</option><option value="blocked">Bloqueado</option></select></div>
+      <div class="form-actions" style="grid-column:1/-1"><button type="button" class="btn-secondary" data-close="formModal">Cancelar</button><button class="btn-primary" type="submit">Guardar</button></div>
+    </form>
+  </div>
+</div>

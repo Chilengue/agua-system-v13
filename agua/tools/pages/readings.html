@@ -1,0 +1,62 @@
+title: Leituras
+scripts: /js/pages/readings.js
+---
+<div class="stats-grid" id="stats"></div>
+<div class="panel">
+  <div class="panel-header">
+    <div><h2>Leituras</h2><span class="muted">As leituras dos mediadores (com ou sem internet) chegam aqui. Corrija, anule ou fature.</span></div>
+    <div class="page-actions">
+      <button class="btn-secondary" id="btnPrint">Imprimir</button>
+      <button class="btn-secondary" id="btnCsv">Excel (CSV)</button>
+      <button class="btn-secondary" id="btnBillAll">Faturar leituras do mês</button>
+      <button class="btn-primary" id="btnNew">+ Registar leitura</button>
+    </div>
+  </div>
+  <div class="toolbar">
+    <input type="search" id="q" placeholder="Cliente, código, telefone, nº de conta ou contador…">
+    <select id="period"></select>
+    <select id="reader"><option value="">Todos os mediadores</option></select>
+    <button class="btn-secondary" id="btnClear">Limpar</button>
+  </div>
+  <div class="chips" id="chips">
+    <button class="chip active" data-f="">Todas</button>
+    <button class="chip orange" data-f="pending">Por faturar</button>
+    <button class="chip" data-f="billed">Faturadas</button>
+    <button class="chip red" data-f="anomaly">Consumo alto</button>
+    <button class="chip" data-f="cancelled">Anuladas</button>
+  </div>
+  <div class="table-wrap"><table class="table">
+    <thead><tr><th>Cliente / conta</th><th class="hide-sm">Mês</th><th class="num">Anterior</th><th class="num">Atual</th><th class="num">Consumo</th><th class="hide-sm">Mediador</th><th>Estado</th><th></th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table></div>
+  <div class="pager" id="pager"></div>
+</div>
+
+<div class="modal" id="newModal" data-static>
+  <div class="modal-content" style="max-width:560px">
+    <div class="modal-head"><h2>Registar leitura</h2><button class="x-close" data-close="newModal">×</button></div>
+    <div id="accPick">
+      <div class="field"><label>Procurar conta</label><input type="search" id="accQ" placeholder="Nome, código, telefone, nº de conta, contador ou fatura…"></div>
+      <div id="accResults" class="cust-list" style="margin:10px 0;max-height:260px;overflow:auto"></div>
+    </div>
+    <form id="newForm" style="display:none" autocomplete="off">
+      <div class="acc-card" style="margin-bottom:0">
+        <div class="head" style="margin-bottom:2px"><div><span class="strong" id="accName"></span> <span class="pill" id="accCat"></span></div>
+          <button type="button" class="btn-icon" id="accChange">Trocar conta</button></div>
+        <div class="muted" id="accMeta"></div>
+      </div>
+      <div class="meter-box">
+        <div class="prev"><small>Leitura anterior</small><b id="vPrev">—</b><div class="muted" id="vPrevWhen"></div></div>
+        <div><small>Leitura atual</small><input type="number" name="current_value" min="0" required class="reading-input" inputmode="numeric" style="font-size:22px!important;padding:6px!important;margin-top:2px"></div>
+        <div><small>Consumo</small><b id="vCons">—</b><div class="muted" id="vAvg"></div></div>
+      </div>
+      <div class="pay-box" id="payBox" style="display:none"></div>
+      <div class="form-grid cols-2" style="margin-top:12px">
+        <div class="field"><label>Mês</label><input type="month" name="period"></div>
+        <div class="field"><label>Observações</label><input type="text" name="notes" placeholder="Ex.: contador avariado"></div>
+      </div>
+      <label class="switch" style="margin-top:10px"><input type="checkbox" name="bill" checked> Faturar já (emite a fatura com este valor)</label>
+      <div class="form-actions"><button type="button" class="btn-secondary" data-close="newModal">Cancelar</button><button class="btn-primary" type="submit" id="btnSaveReading">Guardar leitura</button></div>
+    </form>
+  </div>
+</div>

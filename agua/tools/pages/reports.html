@@ -1,0 +1,26 @@
+title: Relatórios
+scripts: /js/pages/reports.js
+---
+<div class="panel">
+  <div class="panel-header"><div><h2>Relatórios do gestor</h2><span class="muted">Resumos da empresa para imprimir ou baixar em Excel (CSV), sempre com os filtros escolhidos.</span></div></div>
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-t="billing">Faturação mensal</button>
+    <button class="tab" data-t="collections">Recebimentos</button>
+    <button class="tab" data-t="payers">Clientes que pagaram</button>
+    <button class="tab" data-t="debtors">Devedores</button>
+    <button class="tab" data-t="consumption">Consumo por categoria</button>
+    <button class="tab" data-t="readers">Mediadores</button>
+    <button class="tab" data-t="cashiers">Operadores de caixa</button>
+  </div>
+  <div class="toolbar" id="filters">
+    <span class="fp">De</span><input type="month" id="fromPeriod" class="fp"><span class="fp">até</span><input type="month" id="toPeriod" class="fp">
+    <span class="fd">De</span><input type="date" id="from" class="fd"><span class="fd">até</span><input type="date" id="to" class="fd">
+    <label class="switch fo"><input type="checkbox" id="overdue"> Só vencidas</label>
+    <button class="btn-secondary" id="btnRun">Atualizar</button>
+    <span class="grow"></span>
+    <button class="btn-secondary" id="btnPrint">Imprimir</button>
+    <button class="btn-secondary" id="btnCsv">Excel (CSV)</button>
+  </div>
+  <p class="muted" id="desc" style="margin-bottom:12px"></p>
+  <div class="table-wrap"><table class="table"><thead id="head"></thead><tbody id="rows"></tbody><tfoot id="foot"></tfoot></table></div>
+</div>
